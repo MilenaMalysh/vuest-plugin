@@ -93,7 +93,3 @@ const VuestPlugin = {
     }
 };
 export default VuestPlugin
-
-if (typeof window !== 'undefined' && window.Vue) {
-    window.Vue.use(VuestPlugin)
-}
