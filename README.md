@@ -2,43 +2,91 @@
 
 ## Introduction
 
-Vuest-plugin provides reactive data binding for styles
+Vuest-plugin provides reactive data binding for the scoped styles. It helps to separate Vue templates from the styles and allows them to be dynamically changed based on the component state.
 
-## Requirements
+## Installation
 
-Vuest-plugin is designed to be used in conjunction with the modified version of [vue-style-plugin](https://github.com/MilenaMalysh/vue-style-loader), which basically adds name of .vue file as an data-vuest-id attribute to it’s \<style\> tag.
+Install the plugin:
+```bash
+$ npm install vuest-plugin
+```
+
+And use the plugin by calling the Vue.use():
+```javascript
+import Vue from 'vue';
+import VuestPlugin from 'vuest-plugin';
+
+Vue.use(VuestPlugin);
+```
 
 ## Usage
 
+Values that can be used in the css rules:
+ * data properties
+     ```vue
+     <template>
+        <button class="dynamic-style" @click="switchColor">Change</button>
+     </template>
+       
+     <script>
+       export default {
+         data: () => ({
+           color: 'black'
+         }),
+         methods: {
+           switchColor () {
+             this.color = (this.color === 'blue') ? 'black' : 'blue'
+           }
+         }
+       }
+     </script>
+       
+     <style scoped>
+       
+       .dynamic-style {
+         background-color: "{{color}}";
+       }
+     </style>
+     
+     ``` 
+ 
+ * computed properties
 
-  ```
-  <template>
-  	<button class="dynamic-style" @click="switchColor">Change</button>
-  </template>
-  
-  <script>
-  export default {
-      data: () => ({
-          color: 'black'
-      }),
-      methods: {
-          switchColor() {
-              this.color = (this.color === 'blue') ? 'black' : 'blue'
-          }
-      }
-  }
-  </script>
-  
-  <style >
-  
-  .dynamic-style {
-    background-color: "{{color}}";
-  }
-  </style>
+     ```vue
+     <script>
+       export default {
+         data: () => ({
+           time: 3
+         }),
+         computed: {
+           multiplier () {
+             return (this.time - 3) / 6
+           }
+         }
+       }
+     </script>
+       
+     <style scoped>
+       /*...*/
+       .sun {
+           height: calc(("{{multiplier}}" + 1) * 150px);
+           width: calc(("{{multiplier}}" + 1) * 150px);
+           background-color: rgb(
+                   252,
+                   calc(249 - "{{multiplier}}" * 220 ),
+                   calc(129 - "{{multiplier}}" * 100 )
+           );
+           border-radius: 50%;
+           top: calc("{{multiplier}}" * 60%);
+         }
+      /*...*/
+     </style>
+     
+     ``` 
 
-  ``` 
+## Demo
 
-For now there is no syntactic analyzer implemented, so it's only possible to set value in "{\<data\>}" format.
+![](examples/demo1.gif)
 
 ## Authors
 
